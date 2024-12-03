@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
-const Filter = ({ filterWith, handleFilterChange }) => (
-  <div>filter shown with <input value={filterWith} onChange={handleFilterChange} /></div>
+const Filter = ({ filterWith, setFilterWith }) => (
+  <div>filter shown with <input value={filterWith} onChange={(event) => setFilterWith(event.target.value)} /></div>
 )
 
 const Personform = ({ addInfo, newName, handleNameChange, newNumber, handleNumberChange }) => (
@@ -28,9 +28,8 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState("")
   const [filterWith, setFilterWith] = useState("")
-  const [showAll, setShowAll] = useState(true)
 
-  const personsToShow = showAll
+  const personsToShow = filterWith.length < 1
   ? persons
   : persons.filter(person => person.name.match(new RegExp(filterWith, "i")))
 
@@ -60,13 +59,13 @@ const App = () => {
 
   const handleFilterChange = (event) => {
     setFilterWith(event.target.value)
-    setShowAll(false)
+    console.log(event.target.value)
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <Filter persons={persons} filterwith={filterWith} handlefilterchange={handleFilterChange} />
+      <Filter persons={persons} filterwith={filterWith} setFilterWith={setFilterWith} />
       <h2>add a new</h2>
       <Personform addInfo={addInfo} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
