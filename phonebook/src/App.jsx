@@ -71,7 +71,6 @@ const App = () => {
       <Personform addInfo={addInfo} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
       <Persons personsToShow={personsToShow} />
-      {/* {personsToShow.map(person => <p key={person.id}>{person.name} {person.number}</p>)} */}
     </div>
   )
 }
