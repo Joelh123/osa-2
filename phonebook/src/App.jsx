@@ -1,6 +1,5 @@
-import axios from 'axios'
 import { useEffect, useState } from 'react'
-
+import personService from "./service/persons"
 
 const Filter = ({ filterWith, setFilterWith }) => (
   <div>filter shown with <input value={filterWith} onChange={(event) => setFilterWith(event.target.value)} /></div>
@@ -27,10 +26,10 @@ const App = () => {
   const [filterWith, setFilterWith] = useState("")
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3001/persons")
-      .then(response => {
-        setPersons(response.data)
+    personService
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
       })
   }, [])
 
@@ -42,18 +41,15 @@ const App = () => {
     event.preventDefault()
     const noteObject = {
       name: newName,
-      number: newNumber,
-      id: persons.at(-1).id + 1
+      number: newNumber
     }
 
-    for (const person of persons) {
-      if (person.name === noteObject.name) {
-        alert(`${noteObject.name} is already added to phonebook`)
-        return
-      }
-    }
+    personService
+      .create(noteObject)
+      .then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson))
+      })
 
-    setPersons(persons.concat(noteObject))
     setNewName("")
     setNewNumber("")
   }
@@ -61,11 +57,6 @@ const App = () => {
   const handleNameChange = (event) => (setNewName(event.target.value))
 
   const handleNumberChange = (event) => (setNewNumber(event.target.value))
-
-  const handleFilterChange = (event) => {
-    setFilterWith(event.target.value)
-    console.log(event.target.value)
-  }
 
   return (
     <div>
