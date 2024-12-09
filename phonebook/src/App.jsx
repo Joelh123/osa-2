@@ -17,11 +17,34 @@ const Persons = ({ personsToShow, deletePerson }) => (
     personsToShow.map(person => <p key={person.id}>{person.name} {person.number} <button onClick={() => deletePerson(person)}>delete</button></p>)
   )
 
+const Notification = ({ message }) => {
+  const notificationStyle = {
+    color: "green",
+    fontSize: 16,
+    background: "lightgrey",
+    borderStyle: "solid",
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10
+  }
+
+  if (message === null) {
+    return null
+  } else {
+    return (
+      <div style={notificationStyle}>
+        {message}
+      </div>
+    )
+  }
+}
+
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState("")
   const [filterWith, setFilterWith] = useState("")
+  const [notification, setNotification] = useState(null)
 
   useEffect(() => {
     personService
@@ -48,10 +71,23 @@ const App = () => {
       personService
         .create(personObject)
         .then(response => setPersons(persons.concat(response)))
+
+      setNotification(`Added ${newName}`)
+
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+
     } else if (window.confirm(`${foundPerson.name} is already added to phonebook, replace the old number with a new one?`)) {
       personService
         .update(foundPerson.id, personObject)
         .then(response => setPersons(persons.map(person => person.id === response.id ? response : person)))
+
+      setNotification(`Replaced ${newName}'s number`)
+
+      setTimeout(() => {
+        setNotification(null)
+      }, 2500)
     }
   }
 
@@ -64,12 +100,19 @@ const App = () => {
       personService
         .remove(person.id)
         .then(response => setPersons(persons.filter(person => person.id !== response.id)))
+
+      setNotification(`Deleted ${person.name}`)
+
+      setTimeout(() => {
+        setNotification(null)
+      }, 2500)
     } else return
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notification} />
       <Filter persons={persons} filterwith={filterWith} setFilterWith={setFilterWith} />
       <h2>add a new</h2>
       <Personform addInfo={addInfo} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
