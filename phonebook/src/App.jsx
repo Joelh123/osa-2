@@ -37,17 +37,22 @@ const App = () => {
 
   const addInfo = (event) => {
     event.preventDefault()
-    const noteObject = {
+    const personObject = {
       name: newName,
       number: newNumber
     }
 
-    personService
-      .create(noteObject)
-      .then(returnedPerson => setPersons(persons.concat(returnedPerson)))
+    const foundPerson = persons.find(person => person.name === newName)
 
-    setNewName("")
-    setNewNumber("")
+    if (foundPerson === undefined) {
+      personService
+        .create(personObject)
+        .then(response => setPersons(persons.concat(response)))
+    } else if (window.confirm(`${foundPerson.name} is already added to phonebook, replace the old number with a new one?`)) {
+      personService
+        .update(foundPerson.id, personObject)
+        .then(response => setPersons(persons.map(person => person.id === response.id ? response : person)))
+    }
   }
 
   const handleNameChange = (event) => (setNewName(event.target.value))
@@ -56,12 +61,10 @@ const App = () => {
 
   const deletePerson = (person) => {
     if (window.confirm(`Delete ${person.name}?`)) {
-      const newPersons = personService
+      personService
         .remove(person.id)
         .then(response => setPersons(persons.filter(person => person.id !== response.id)))
-    } else {
-      return
-    }
+    } else return
   }
 
   return (
