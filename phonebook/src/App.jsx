@@ -99,7 +99,7 @@ const App = () => {
 
       setTimeout(() => {
         setNotification(null)
-      }, 2500)
+      }, 4000)
 
     } else if (window.confirm(`${foundPerson.name} is already added to phonebook, replace the old number with a new one?`)) {
       personService
@@ -114,12 +114,12 @@ const App = () => {
         setNotification(`Replaced ${newName}'s number`)
         setTimeout(() => {
           setNotification(null)
-        }, 2500)
+        }, 4000)
       }
 
       setTimeout(() => {
         setError(null)
-      }, 2500)
+      }, 4000)
     }
   }
 
