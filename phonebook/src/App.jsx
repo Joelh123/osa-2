@@ -146,7 +146,7 @@ const App = () => {
       <h2>Phonebook</h2>
       <Error message={error} />
       <Notification message={notification} />
-      <Filter persons={persons} filterwith={filterWith} setFilterWith={setFilterWith} />
+      <Filter filterwith={filterWith} setFilterWith={setFilterWith} />
       <h2>add a new</h2>
       <Personform addInfo={addInfo} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
