@@ -10,27 +10,20 @@ const Filter = ({ filterWith, setFilterWith }) => {
 
 const Countries = ({ countriesToShow, filterWith }) => {
 
-  if (countriesToShow.length > 10 && countriesToShow.length !== 0) {
-    console.log("yli 10")
+  console.log(countriesToShow.length)
+
+  if (countriesToShow.length <= 1 && !filterWith) { return null }
+
+  else if (countriesToShow.length > 10 && countriesToShow.length !== 0) {
     return (
       <p>Too many matches, specify another filter</p>
     )
   }
 
   else if (countriesToShow.length <= 10 && countriesToShow.length !== 0) {
-    console.log("alle 10")
     return (
       countriesToShow.map(country => <p key={country.cca2}>{country.name.common}</p>)
     )
-  }
-
-  else if (countriesToShow.length <= 1 && countriesToShow.length !== 0) {
-    console.log("alle 2")
-    return null
-  }
-
-  else if (countriesToShow.length !== 0 && filterWith.length !== 0) {
-    <p>Couldn't find country</p>
   }
 }
 
